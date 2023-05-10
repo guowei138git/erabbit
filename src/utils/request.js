@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from '@/store'
+import router from '@/router'
 
 // 导出基准地址，原因：其他地方不是通过axios发请求的地方也会用上基准地址
 export const baseURL = 'http://pcapi-xiaotuxian-front-devtest.itheima.net/'
@@ -26,6 +27,29 @@ instance.interceptors.request.use(config => {
 }, err => {
     return Promise.reject(err)
 })
+
+// 响应拦截器
+instance.interceptors.response.use((res) => {
+    // 1.剥离无效数据 - 取出data数据
+    res.data
+}, err =>{
+    // 401 状态码 -> 进入该函数 - 处理token失效
+    if (err.response && err.response.status === 401) {
+        // 2.清空无效用户信息
+        store.commit('user/setUser', {})
+        // 3.跳转之前需要 - 传参(当前路由地址) 给登录页面
+        // 在组件里： `/user?a=10` 获取：$route.path = /user 和 $route.fullPath = /user?a=10
+        // 在js模块中： router.currentRoute.value.fullPath -> 就是当前路由地址
+        // 备注：router.currentRoute 是ref响应式数据
+        const fullPath = router.currentRoute.value.fullPath
+        // 转换uri编码 - 防止解析地址出问题
+        const url =  encodeURIComponent(fullPath)
+        // 4.跳转到登录页面
+        router.push('/login?redirectUrl=' + url)
+    }
+    return Promise.reject(err)
+})
+
 
 // 导出一个函数 - 请求工具函数
 export default (url, method, submitData) => {
