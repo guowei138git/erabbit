@@ -6,10 +6,10 @@ const Home = () => import('@/views/home/index')
 // 路由规则
 const routes = [
   {
-    path:'/',
-    component:Layout,
-    children:[
-      {path:'/', component:Home}
+    path: '/',
+    component: Layout,
+    children: [
+      { path: '/', component: Home }
     ]
   }
 ]

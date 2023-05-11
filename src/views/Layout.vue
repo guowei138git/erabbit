@@ -13,8 +13,8 @@
 
 <script>
 export default {
-  name: "xtx-layout"
-};
+  name: 'xtx-layout'
+}
 </script>
 
 <style scoped lang='less'>
