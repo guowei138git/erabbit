@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 一级路由- 布局容器 -->
-    <nav>顶部通栏</nav>
+    <AppTopnav />
     <header>头部</header>
     <main>
       <!-- 二级路由 -->
@@ -12,8 +12,13 @@
 </template>
 
 <script>
+import AppTopnav from '@/components/app-topnav'
+
 export default {
-  name: 'xtx-layout'
+  name: 'xtx-layout',
+  components: {
+    AppTopnav
+  }
 }
 </script>
 
